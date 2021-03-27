@@ -126,12 +126,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1210491190}
+    m_TransformParent: {fileID: 1944121771}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
         type: 3}
@@ -151,12 +151,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.050000012
+      value: -0.04999999
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
         type: 3}
@@ -202,6 +202,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SoccerField
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 8fc57b7f9be85e848b1f510e0db53a2a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8fc57b7f9be85e848b1f510e0db53a2a, type: 3}
@@ -820,7 +830,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 105420376}
   - {fileID: 1549864095}
   - {fileID: 1944121771}
   m_Father: {fileID: 0}
@@ -864,6 +873,8 @@ MonoBehaviour:
   soccerField: {fileID: 105420376}
   moveArea: {x: 6, y: 0, z: 13}
   arCamera: {fileID: 1806747407}
+  soccerballPrefab: {fileID: 2040205304272489104, guid: 90de198b60a5a2c438ef212b1b64f5f4,
+    type: 3}
 --- !u!4 &1709985949
 Transform:
   m_ObjectHideFlags: 0
@@ -991,6 +1002,8 @@ GameObject:
   - component: {fileID: 1806747405}
   - component: {fileID: 1806747404}
   - component: {fileID: 1806747403}
+  - component: {fileID: 1806747409}
+  - component: {fileID: 1806747408}
   m_Layer: 0
   m_Name: ARCamera
   m_TagString: MainCamera
@@ -1089,6 +1102,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1806747408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806747402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d7ef0717411684cbb4ad2e106fa55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layersToHit:
+    serializedVersion: 2
+    m_Bits: 256
+  gameManager: {fileID: 1709985948}
+--- !u!114 &1806747409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1806747402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d10272b69bee80d44a7f9368c1ab4e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
 --- !u!4 &1944121771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1726853606499341649, guid: 3de83945b5f4ce941ae228456af9b9c1,
@@ -1176,7 +1218,7 @@ PrefabInstance:
     - target: {fileID: 1726853606499341649, guid: 3de83945b5f4ce941ae228456af9b9c1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1726853606499341649, guid: 3de83945b5f4ce941ae228456af9b9c1,
         type: 3}
@@ -1230,22 +1272,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7468443775022504433, guid: 3de83945b5f4ce941ae228456af9b9c1,
         type: 3}
-      propertyPath: rigidBody
-      value: 
-      objectReference: {fileID: 944178185714620934}
-    - target: {fileID: 7468443775022504433, guid: 3de83945b5f4ce941ae228456af9b9c1,
-        type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1709985948}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3de83945b5f4ce941ae228456af9b9c1, type: 3}
---- !u!54 &944178185714620934 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 7435107309061994443, guid: 3de83945b5f4ce941ae228456af9b9c1,
-    type: 3}
-  m_PrefabInstance: {fileID: 944178185714620933}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3632538283437184056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1253,11 +1284,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1210491190}
     m_Modifications:
-    - target: {fileID: 586925652389459360, guid: 98997f7c096c5de43b8ed11ba530700e,
-        type: 3}
-      propertyPath: rigidBody
-      value: 
-      objectReference: {fileID: 3632538283437184057}
     - target: {fileID: 586925652389459360, guid: 98997f7c096c5de43b8ed11ba530700e,
         type: 3}
       propertyPath: gameManager
@@ -1323,16 +1349,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4805504433779946082, guid: 98997f7c096c5de43b8ed11ba530700e,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98997f7c096c5de43b8ed11ba530700e, type: 3}
---- !u!54 &3632538283437184057 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4805504433779946082, guid: 98997f7c096c5de43b8ed11ba530700e,
-    type: 3}
-  m_PrefabInstance: {fileID: 3632538283437184056}
-  m_PrefabAsset: {fileID: 0}

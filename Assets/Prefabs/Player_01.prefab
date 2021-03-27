@@ -170,12 +170,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a4d71d92222d44caf026ede21bbe79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentCharacterState: 0
+  gameManager: {fileID: 0}
+  rigidBody: {fileID: 4805504433779946082}
   moveSpeed: 3
   minDistanceToTarget: 1
-  idletime: 2
+  idleTime: 2
   currentIdleWaitTime: 0
-  gameManager: {fileID: 0}
-  rigidBody: {fileID: 0}
+  waveTime: 2
+  distanceToStartWavingFrom: 4
+  timeBetweenWaves: 5
+  distanceThresholdOfPlayer: 5
+  selfIdentifier: {fileID: 3086253044845818448}
 --- !u!54 &2695481177603550955
 Rigidbody:
   m_ObjectHideFlags: 0
