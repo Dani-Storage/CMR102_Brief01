@@ -37,8 +37,17 @@ public class CharacterController : MonoBehaviour
     //fleeing state variables
     public float distanceThresholdOfPlayer = 5; // the distance that is "too" close for the player to be to us. 
 
+
+    /// <summary>
+    /// Playing state variables 
+    /// </summary>
     private Transform currentSoccerBall = null; // a reference to the current soccerball;
     public GameObject selfIdentifier; // reference to our identification colour. 
+    public GameObject myGoal;  // reference to this character's goal. 
+    public float soccerBallKickForce = 10; // amount of force character can use to kick ball
+    public float socerBallInteractDistance = 0.25f; // if the soccerball is close nough, then we can kick it. 
+
+
     /// <summary>
     /// Returns the currentTargetPosition
     /// And Set, the new current position
@@ -86,16 +95,49 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     private void HandleRoamingstate()
     {
-        /// If we are still too far away move closer
-        if (currentCharacterState == CharacterStates.Roaming && Vector3.Distance (transform.position, CurrentTargetPosition) > minDistanceToTarget)
+
+        float distanceToTarget = 0;
+
+        if (currentSoccerBall != null)
         {
-            Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); // the position we want to move towards 
-            Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // the amount we should move towards that position
-            rigidBody.MovePosition(nextMovePosition);
-            currentIdleWaitTime = Time.time + idleTime;
+            distanceToTarget = socerBallInteractDistance; 
+        }
+        else
+        {
+            distanceToTarget = minDistanceToTarget; 
+        }
+
+        /// If we are still too far away move closer
+        if (currentCharacterState == CharacterStates.Roaming && Vector3.Distance (transform.position, CurrentTargetPosition) > distanceToTarget)
+        {
+            if(currentSoccerBall != null)
+            {
+                CurrentTargetPosition = currentSoccerBall.position;
+                Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); // the position we want to move towards 
+                Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime *1.5f); // the amount we should move towards that position
+                rigidBody.MovePosition(nextMovePosition);
+                currentIdleWaitTime = Time.time + idleTime;
+            }
+            else
+            {
+                Vector3 targetPosition = new Vector3(CurrentTargetPosition.x, transform.position.y, CurrentTargetPosition.z); // the position we want to move towards 
+                Vector3 nextMovePosition = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime); // the amount we should move towards that position
+                rigidBody.MovePosition(nextMovePosition);
+                currentIdleWaitTime = Time.time + idleTime;
+            }
+            
         }
         else if (currentCharacterState == CharacterStates.Roaming) // so check to see if we're still roaming.
         {
+            if(currentSoccerBall != null)
+            {
+                currentCharacterState = CharacterStates.Playing; // start playing with the ball
+                // we want to kick the ball cause are close enough. 
+            }
+            else
+            {
+
+            }
             currentCharacterState = CharacterStates.Idle; // start idling
         }
     }
@@ -154,7 +196,15 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     private void HandlePlayingState()
     {
-         
+         // we want to kick the ball cause it is close enough.
+         if(currentCharacterState == CharacterStates.Playing)
+        {
+            KickSoccerBall(); // kick soccer ball
+
+            //set our target to the soccer balls again and start moving towards ball again.
+            currentTargetPosition = currentSoccerBall.position;
+            currentCharacterState = CharacterStates.Roaming;
+        }
     }
 
     /// <summary>
@@ -162,7 +212,7 @@ public class CharacterController : MonoBehaviour
     /// </summary>
     private void HandleWavingState()
     {
-        if (ReturnCharacterTransformToWaveAt()!= null && currentCharacterState != CharacterStates.Waving && Time.time > currentTimeBetweenWaves && currentCharacterState != CharacterStates.Fleeing)
+        if (ReturnCharacterTransformToWaveAt()!= null && currentCharacterState != CharacterStates.Waving && Time.time > currentTimeBetweenWaves && currentCharacterState != CharacterStates.Fleeing && currentSoccerBall == null)
         {
             // we should start waving!
             currentCharacterState = CharacterStates.Waving;
@@ -227,12 +277,21 @@ public class CharacterController : MonoBehaviour
     ///  is called when the soccer ball is spawned
     /// </summary>
     /// <param name="SoccerBall"></param>
-    public void soccerBallSpawned(Transform SoccerBall)
+    public void SoccerBallSpawned(Transform SoccerBall)
     {
         currentSoccerBall = SoccerBall;
         CurrentTargetPosition = currentSoccerBall.position; // set our targetposition to our soccer ball
         currentCharacterState = CharacterStates.Roaming; // using our roamingstate to start moving towards our soccerball
         selfIdentifier.SetActive(true);
+    }
+    
+    /// <summary>
+    /// Handles Kicking the soccerball
+    /// </summary>
+    public void KickSoccerBall()
+    {
+        Vector3 direction = myGoal.transform.position - transform.forward; // get get a directional vector that moves towards our goal post. 
+        currentSoccerBall.GetComponent<Rigidbody>().AddForce(direction * soccerBallKickForce * Random.Range(0.5f, 10f)); /// kick the ball towards our goal post.  and add a little random force. so the ball doesn't get stuck.
     }
 
 }

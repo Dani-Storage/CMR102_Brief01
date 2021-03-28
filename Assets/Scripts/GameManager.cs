@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
             currentSoccerBallInstance = Instantiate(soccerballPrefab, positionToSpawn, soccerballPrefab.transform.rotation, aRContentParent);
             currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccer ball to 0
             currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the anglular velocity of the soccer ball to 0
+            AlertCharactersToSoccerBallSpawningIn(); // tell everyone the ball is spawned
         }
         else
         {
@@ -103,6 +104,19 @@ public class GameManager : MonoBehaviour
             currentSoccerBallInstance.transform.position = positionToSpawn; // move our soccerball to the position to spawn.
             currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccer ball to 0
             currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the anglular velocity of the soccer ball to 0
+        }
+    }
+
+    /// <summary>
+    /// Findsa all characters in the scene and loops through them and tells them that there is a soccerball
+    /// </summary>
+    private void AlertCharactersToSoccerBallSpawningIn()
+    {
+        CharacterController[] mice = FindObjectsOfType<CharacterController>(); // Find all instances of our character controller class in our scene.
+        for(int i=0; i<mice.Length; i++)
+        {
+            //tell the characters the ball is spawned in. 
+            mice[i].SoccerBallSpawned(currentSoccerBallInstance.transform);
         }
     }
 }
